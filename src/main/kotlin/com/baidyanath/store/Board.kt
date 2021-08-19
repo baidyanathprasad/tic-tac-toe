@@ -9,6 +9,9 @@ class Board (size: Int, initialBoardVal: String = " ") {
 
     val board = Array(size * size ) { initialBoardVal }
 
+    /**
+     *  A method to find the next turn in the board!
+     */
     fun findTurn(): String {
         var playerXCount = 0
         var player0Count = 0
