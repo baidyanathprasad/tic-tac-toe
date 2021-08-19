@@ -1,6 +1,6 @@
 package com.baidyanath.utils
 
-import com.baidyanath.domain.Board
+import com.baidyanath.store.Board
 
 object DisplayBoard : Display<Board> {
 
