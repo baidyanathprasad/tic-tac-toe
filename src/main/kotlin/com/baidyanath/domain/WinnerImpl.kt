@@ -23,10 +23,10 @@ class WinnerImpl: Winner<Board, List<Player>> {
                 6 -> line = board[0] + board[4] + board[8]
                 7 -> line = board[2] + board[4] + board[6]
             }
-            //For X winner
+
             if (line == "XXX") {
                 return playerX to WIN
-            } else if (line == "OOO") {
+            } else if (line == "000") {
                 return player0 to WIN
             }
         }
@@ -46,6 +46,7 @@ class WinnerImpl: Winner<Board, List<Player>> {
             playerX.hasTurn -> playerX
             else -> player0
         }
+
         println("${playerWithTurn.name}'s turn; enter a slot number to place ${playerWithTurn.name} in:")
         return null to ON
     }
