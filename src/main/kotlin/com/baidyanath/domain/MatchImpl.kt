@@ -2,6 +2,7 @@ package com.baidyanath.domain
 
 import com.baidyanath.store.Board
 import com.baidyanath.utils.DisplayBoard
+import java.lang.IllegalStateException
 import java.util.*
 
 object MatchImpl : Match<Board, List<Player>> {
@@ -53,9 +54,8 @@ object MatchImpl : Match<Board, List<Player>> {
 
     private fun validateInput(input: Int, board: Board): Boolean {
         try {
-            val size = board.board.size
-            if (input < 1 || input > size * size) {
-                println("Invalid input; re-enter slot number:")
+            if (input < 1 || input > board.board.size) {
+                throw InputMismatchException("Slot is not valid!")
             }
         }
         catch (e: InputMismatchException) {
@@ -88,7 +88,12 @@ object MatchImpl : Match<Board, List<Player>> {
     }
 
     private fun isSlotAvailable(input: Int, board: Board): Boolean {
-        return board.board[input - 1] == " "
+        return try {
+            board.board[input - 1] == " "
+        } catch (e: IllegalStateException) {
+            println("Wrong Input; enter slot again.")
+            false
+        }
     }
 
     private fun availableRandomSlot(board: Board) : Int {
