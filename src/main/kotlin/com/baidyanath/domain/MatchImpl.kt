@@ -8,21 +8,30 @@ object MatchImpl : Match<Board, List<Player>> {
 
     override fun play(board: Board, players: List<Player>) {
         println("Welcome! let's begin the Tic Tac Toe(3 X 3).")
-        DisplayBoard.run(board)
+        val isComputerMode = isComputerMode()
+        if (isComputerMode) {
+            println("Got it, Computer has name: 0, and you're X")
+        }
 
+        DisplayBoard.run(board)
         println("X will play first. Enter a slot number to place X in:")
         var winner: Pair<Player?, Result> = null to Result.ON
 
-        while (winner.first == null && winner.second == Result.ON){
-            val input = readLine()?.toInt()!!
+        while (winner.first == null && winner.second == Result.ON) {
+            val turn = board.findTurn()
+
+            val input: Int = if (isComputerMode && turn == "0") {
+                availableRandomSlot(board)
+            } else {
+                readLine()?.toInt()!!
+            }
 
             val validInput = validateInput(input = input, board = board)
             if (validInput.not()) {
                 continue
             }
 
-            val turn = board.findTurn()
-            if (board.board[input - 1] == " ") {
+            if (isSlotAvailable(input, board)) {
                 board.board[input - 1] = turn
                 DisplayBoard.run(board)
 
@@ -38,7 +47,7 @@ object MatchImpl : Match<Board, List<Player>> {
             println("It's a draw! Thanks for playing.");
         }
         else {
-            println("Congratulations! ${winner.first?.name}'s have won! Thanks for playing.")
+            println("Congratulations! ${winner.first?.name} have won! Thanks for playing.")
         }
     }
 
@@ -69,5 +78,25 @@ object MatchImpl : Match<Board, List<Player>> {
         }
 
         return players
+    }
+
+    private fun isComputerMode() : Boolean {
+        println("Do you wish to play with computer(Yes/No): ")
+        val computer = readLine()!!
+
+        return computer.contentEquals("Yes", true)
+    }
+
+    private fun isSlotAvailable(input: Int, board: Board): Boolean {
+        return board.board[input - 1] == " "
+    }
+
+    private fun availableRandomSlot(board: Board) : Int {
+        while (true) {
+            val randomSlot = (1..9).random()
+            if (isSlotAvailable(randomSlot, board)) {
+                return randomSlot
+            }
+        }
     }
 }
