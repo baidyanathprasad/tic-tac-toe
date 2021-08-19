@@ -6,7 +6,7 @@ import com.baidyanath.store.Board
 
 class WinnerImpl: Winner<Board, List<Player>> {
 
-    override fun findWinner(t1: Board, t2: List<Player>): Pair<Player?, Result> {
+    override fun find(t1: Board, t2: List<Player>): Pair<Player?, Result> {
         val board = t1.board
         val playerX = t2[0]
         val player0 = t2[1]
