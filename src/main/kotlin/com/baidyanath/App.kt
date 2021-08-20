@@ -5,7 +5,6 @@ import com.baidyanath.domain.Player
 import com.baidyanath.store.Board
 
 fun main() {
-
     val size =  3
     val board = Board(size)
 

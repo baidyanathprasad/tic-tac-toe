@@ -24,9 +24,13 @@ object MatchImpl : Match<Board, List<Player>> {
             val input: Int = if (isComputerMode && turn == "0") {
                 availableRandomSlot(board)
             } else {
-                readLine()?.toInt()!!
+                try {
+                    readLine()?.toInt()!!
+                }
+                catch (e: NumberFormatException) {
+                    continue
+                }
             }
-
             val validInput = validateInput(input = input, board = board)
             if (validInput.not()) {
                 continue
@@ -37,7 +41,7 @@ object MatchImpl : Match<Board, List<Player>> {
                 DisplayBoard.run(board)
 
                 exchangeTurn(turn, players)
-                winner = WinnerImpl().findWinner(board, players)
+                winner = WinnerImpl().find(board, players)
             }
             else {
                 println("Slot already taken; re-enter slot number:")
@@ -82,8 +86,17 @@ object MatchImpl : Match<Board, List<Player>> {
 
     private fun isComputerMode() : Boolean {
         println("Do you wish to play with computer(Yes/No): ")
-        val computer = readLine()!!
+        var computer = readLine()!!
 
+        while(true) {
+            if (computer.contentEquals("yes", true)
+                || computer.contentEquals("no", true)
+            ) {
+                break
+            }
+            println("Incorrect Input; please type yes or no: ")
+            computer = readLine()!!
+        }
         return computer.contentEquals("Yes", true)
     }
 
